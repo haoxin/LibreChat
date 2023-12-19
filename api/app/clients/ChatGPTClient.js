@@ -119,8 +119,10 @@ class ChatGPTClient extends BaseClient {
       this.completionsUrl = this.options.reverseProxyUrl;
     } else if (isChatGptModel) {
       this.completionsUrl = 'https://api.openai.com/v1/chat/completions';
+      this.completionsUrl = 'http://127.0.0.1:8080/v1/chat/completions';
     } else {
       this.completionsUrl = 'https://api.openai.com/v1/completions';
+      this.completionsUrl = 'http://127.0.0.1:8080/v1/completions';
     }
 
     return this;

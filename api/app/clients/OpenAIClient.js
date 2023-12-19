@@ -170,9 +170,12 @@ class OpenAIClient extends BaseClient {
       this.langchainProxy = extractBaseURL(reverseProxy);
     } else if (isChatGptModel) {
       this.completionsUrl = 'https://api.openai.com/v1/chat/completions';
+      this.completionsUrl = 'http://127.0.0.1:8080/v1/chat/completions';
     } else {
       this.completionsUrl = 'https://api.openai.com/v1/completions';
+      this.completionsUrl = 'http://127.0.0.1:8080/v1/completions';
     }
+
 
     if (this.azureEndpoint) {
       this.completionsUrl = this.azureEndpoint;
@@ -776,6 +779,7 @@ ${convo}
       let chatCompletion;
       const openai = new OpenAI({
         apiKey: this.apiKey,
+        baseURL:"http://127.0.0.1:8080/v1",
         ...opts,
       });
 
