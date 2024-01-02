@@ -851,7 +851,7 @@ ${convo}
         err?.message?.includes('abort') ||
         (err instanceof OpenAI.APIError && err?.message?.includes('abort'))
       ) {
-        return '';
+        return intermediateReply;
       }
       if (
         err?.message?.includes(
