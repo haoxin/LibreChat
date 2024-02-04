@@ -84,6 +84,9 @@ const conversationPreset = {
     type: String,
     // default: null,
   },
+  cvEnhancement: {
+    type: Boolean,
+  },
   resendImages: {
     type: Boolean,
   },

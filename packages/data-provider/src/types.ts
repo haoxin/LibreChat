@@ -16,6 +16,7 @@ export type TEndpointOption = {
   endpoint: EModelEndpoint;
   endpointType?: EModelEndpoint;
   modelDisplayLabel?: string;
+  cvEnhancement?: boolean;
   resendImages?: boolean;
   imageDetail?: ImageDetail;
   model?: string | null;

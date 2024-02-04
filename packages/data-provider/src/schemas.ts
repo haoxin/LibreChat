@@ -205,6 +205,7 @@ export const tConversationSchema = z.object({
   maxOutputTokens: z.number().optional(),
   agentOptions: tAgentOptionsSchema.nullable().optional(),
   /* vision */
+  cvEnhancement: z.boolean().optional(),
   resendImages: z.boolean().optional(),
   imageDetail: eImageDetailSchema.optional(),
   /* assistant */
@@ -257,6 +258,7 @@ export const openAISchema = tConversationSchema
     top_p: true,
     presence_penalty: true,
     frequency_penalty: true,
+    cvEnhancement: true,
     resendImages: true,
     imageDetail: true,
   })
@@ -269,6 +271,7 @@ export const openAISchema = tConversationSchema
     top_p: obj.top_p ?? 1,
     presence_penalty: obj.presence_penalty ?? 0,
     frequency_penalty: obj.frequency_penalty ?? 0,
+    cvEnhancement: obj.cvEnhancement ?? false,
     resendImages: obj.resendImages ?? false,
     imageDetail: obj.imageDetail ?? ImageDetail.auto,
   }))
@@ -280,6 +283,7 @@ export const openAISchema = tConversationSchema
     top_p: 1,
     presence_penalty: 0,
     frequency_penalty: 0,
+    cvEnhancement: false,
     resendImages: false,
     imageDetail: ImageDetail.auto,
   }));
@@ -484,6 +488,7 @@ export const compactOpenAISchema = tConversationSchema
     top_p: true,
     presence_penalty: true,
     frequency_penalty: true,
+    cvEnhancement: true,
     resendImages: true,
     imageDetail: true,
   })
@@ -503,6 +508,9 @@ export const compactOpenAISchema = tConversationSchema
     }
     if (newObj.frequency_penalty === 0) {
       delete newObj.frequency_penalty;
+    }
+    if (newObj.cvEnhancement !== true) {
+      delete newObj.cvEnhancement;
     }
     if (newObj.resendImages !== true) {
       delete newObj.resendImages;

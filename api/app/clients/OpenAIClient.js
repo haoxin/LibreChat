@@ -63,6 +63,24 @@ class OpenAIClient extends BaseClient {
     }
 
     const modelOptions = this.options.modelOptions || {};
+    const enhancements = {
+      ocr: {
+        enabled: true,
+      },
+      grounding: {
+        enabled: true,
+      },
+    };
+    const dataSources = [
+      {
+        type: 'AzureComputerVision',
+        parameters: {
+          //hard code here, don't want to add env config...
+          endpoint: 'https://.cognitiveservices.azure.com/',
+          key: '',
+        },
+      },
+    ];
 
     if (!this.modelOptions) {
       this.modelOptions = {
@@ -76,13 +94,20 @@ class OpenAIClient extends BaseClient {
         stop: modelOptions.stop,
       };
     } else {
-      // Update the modelOptions if it already exists
-      this.modelOptions = {
-        ...this.modelOptions,
-        ...modelOptions,
-      };
+      if (this.options.cvEnhancement) {
+        this.modelOptions = {
+          ...this.modelOptions,
+          ...modelOptions,
+          enhancements,
+          dataSources,
+        };
+      } else {
+        this.modelOptions = {
+          ...this.modelOptions,
+          ...modelOptions,
+        };
+      }
     }
-
     this.checkVisionRequest(this.options.attachments);
 
     const { OPENROUTER_API_KEY, OPENAI_FORCE_PROMPT } = process.env ?? {};
@@ -188,7 +213,6 @@ class OpenAIClient extends BaseClient {
       this.completionsUrl = 'https://api.openai.com/v1/completions';
       this.completionsUrl = 'http://127.0.0.1:8080/v1/completions';
     }
-
 
     if (this.azureEndpoint) {
       this.completionsUrl = this.azureEndpoint;
@@ -354,6 +378,7 @@ class OpenAIClient extends BaseClient {
       promptPrefix: this.options.promptPrefix,
       resendImages: this.options.resendImages,
       imageDetail: this.options.imageDetail,
+      cvEnhancement: this.options.cvEnhancement,
       ...this.modelOptions,
     };
   }
@@ -971,11 +996,16 @@ ${convo}
       if (process.env.OPENAI_ORGANIZATION) {
         opts.organization = process.env.OPENAI_ORGANIZATION;
       }
+      if (this.options.cvEnhancement) {
+        modelOptions.stream = false;
+        opts.baseURL = opts.baseURL + '/extensions';
+        logger.debug('[OpenAIClient] chatCompletion: using extensions endpoint', opts.baseURL);
+      }
 
       let chatCompletion;
       const openai = new OpenAI({
         apiKey: this.apiKey,
-        baseURL:"http://127.0.0.1:8080/v1",
+        baseURL: 'http://127.0.0.1:8080/v1',
         ...opts,
       });
 
