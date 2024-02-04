@@ -31,6 +31,7 @@ export default function Settings({ conversation, setOption, models, readonly }: 
     top_p: topP,
     frequency_penalty: freqP,
     presence_penalty: presP,
+    cvEnhancement,
     resendImages,
     imageDetail,
   } = conversation;
@@ -41,6 +42,7 @@ export default function Settings({ conversation, setOption, models, readonly }: 
   const setTopP = setOption('top_p');
   const setFreqP = setOption('frequency_penalty');
   const setPresP = setOption('presence_penalty');
+  const setcvEnhancement = setOption('cvEnhancement');
   const setResendImages = setOption('resendImages');
   const setImageDetail = setOption('imageDetail');
 
@@ -257,6 +259,12 @@ export default function Settings({ conversation, setOption, models, readonly }: 
         <div className="w-full">
           <div className="mb-2 flex w-full justify-between gap-2">
             <label
+              htmlFor="cv-Enhancement"
+              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 dark:text-gray-50"
+            >
+              <small>{'Azure CV enhancement'}</small>
+            </label>
+            <label
               htmlFor="resend-images"
               className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 dark:text-gray-50"
             >
@@ -281,6 +289,17 @@ export default function Settings({ conversation, setOption, models, readonly }: 
             />
           </div>
           <div className="flex w-full justify-between gap-2">
+            <HoverCard openDelay={500}>
+              <HoverCardTrigger>
+                <Switch
+                  id="cv-Enhancement"
+                  checked={cvEnhancement ?? false}
+                  onCheckedChange={(checked: boolean) => setcvEnhancement(checked)}
+                  disabled={readonly}
+                  className="flex"
+                />
+              </HoverCardTrigger>
+            </HoverCard>
             <HoverCard openDelay={500}>
               <HoverCardTrigger>
                 <Switch
