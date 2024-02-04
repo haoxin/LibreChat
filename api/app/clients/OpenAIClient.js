@@ -998,8 +998,8 @@ ${convo}
       }
       if (this.options.cvEnhancement) {
         modelOptions.stream = false;
-        console.log('opts.baseURL ----------', opts.baseURL);
         opts.baseURL = opts.baseURL + '/extensions';
+        logger.debug('[OpenAIClient] chatCompletion: using extensions endpoint', opts.baseURL);
       }
 
       let chatCompletion;
