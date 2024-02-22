@@ -83,8 +83,8 @@ export default function ChatForm({ index = 0 }) {
               )
             )}
           </div>
+          <VoiceInputButton disabled={false} onVoiceInput={handleVoiceInput} />
         </div>
-        <VoiceInputButton disabled={false} onVoiceInput={handleVoiceInput} />
       </div>
     </form>
   );
