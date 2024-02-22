@@ -95,3 +95,5 @@ auth.json
 mongodb/nohup.out
 mongodb/data-node/
 mongodb/meili_data/
+# User uploads
+uploads/

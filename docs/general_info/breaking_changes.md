@@ -9,6 +9,69 @@ weight: -10
 **If you experience any issues after updating, we recommend clearing your browser cache and cookies.**
 Certain changes in the updates may impact cookies, leading to unexpected behaviors if not cleared properly.
 
+## **.env** changes v0.6.6 -> v0.6.9
+see [⚙️ Environment Variables](../install/configuration/dotenv.md) for more info
+
+- Assistants added to the list
+```sh
+# ENDPOINTS=openAI,assistants,azureOpenAI,bingAI,chatGPTBrowser,google,gptPlugins,anthropic
+```
+- Updated OpenAI models
+```sh
+# OPENAI_MODELS=gpt-3.5-turbo-0125,gpt-3.5-turbo-0301,gpt-3.5-turbo,gpt-4,gpt-4-0613,gpt-4-vision-preview,gpt-3.5-turbo-0613,gpt-3.5-turbo-16k-0613,gpt-4-0125-preview,gpt-4-turbo-preview,gpt-4-1106-preview,gpt-3.5-turbo-1106,gpt-3.5-turbo-instruct,gpt-3.5-turbo-instruct-0914,gpt-3.5-turbo-16k
+```
+- Assistants configuration
+```sh
+#====================#
+#   Assistants API   #
+#====================#
+
+# ASSISTANTS_API_KEY=
+# ASSISTANTS_BASE_URL=
+# ASSISTANTS_MODELS=gpt-3.5-turbo-0125,gpt-3.5-turbo-16k-0613,gpt-3.5-turbo-16k,gpt-3.5-turbo,gpt-4,gpt-4-0314,gpt-4-32k-0314,gpt-4-0613,gpt-3.5-turbo-0613,gpt-3.5-turbo-1106,gpt-4-0125-preview,gpt-4-turbo-preview,gpt-4-1106-preview
+```
+- Updated Plugin models
+```sh
+# PLUGIN_MODELS=gpt-4,gpt-4-turbo-preview,gpt-4-0125-preview,gpt-4-1106-preview,gpt-4-0613,gpt-3.5-turbo,gpt-3.5-turbo-0125,gpt-3.5-turbo-1106,gpt-3.5-turbo-0613
+```
+- Birthday hat
+```sh
+# SHOW_BIRTHDAY_ICON=true
+```
+### Previous changes:
+- DALL-E
+```sh
+# DALL·E
+#----------------
+# DALLE_API_KEY=
+# DALLE3_API_KEY=
+# DALLE2_API_KEY=
+# DALLE3_SYSTEM_PROMPT=
+# DALLE2_SYSTEM_PROMPT=
+# DALLE_REVERSE_PROXY=
+# DALLE3_BASEURL=
+# DALLE2_BASEURL=
+
+# DALL·E (via Azure OpenAI)
+# Note: requires some of the variables above to be set
+#----------------
+# DALLE3_AZURE_API_VERSION=
+# DALLE2_AZURE_API_VERSION=
+```
+
+
+## January 31th 2024
+- A new method to use the ChatGPT endpoint is now documented. It uses "Ninja"
+- For more info:
+    - [Ninja Deployment Guide](../features/ninja.md)
+    - [Ninja GitHub repo](https://github.com/gngpp/ninja/tree/main)
+
+## January 30th 2024
+- Since PandoraNext has shut down, the ChatGPTbrowser endpoint is no longer available in LibreChat.
+- For more info:
+    - [https://github.com/danny-avila/LibreChat/discussions/1663](https://github.com/danny-avila/LibreChat/discussions/1663#discussioncomment-8314025)
+    - [https://linux.do/t/topic/1051](https://linux.do/t/topic/1051)
+
 ## v0.6.6
 
 - **DALL-E Update**: user-provided keys for DALL-E are now specific to each DALL-E version, i.e.: `DALLE3_API_KEY` and `DALLE2_API_KEY`
@@ -56,8 +119,8 @@ Some users have reported an error after updating their docker containers.
     **(leave mongo intact to preserve your profiles and history)**
     ![image](https://github.com/fuegovic/LibreChat/assets/32828263/acf15682-435e-44bd-8873-a5dceb3121cc)
   - Repeat the docker update process: 🚀
-    - `docker-compose build`
-    - `docker-compose up -d`
+    - `docker compose build`
+    - `docker compose up -d`
 
 ## v0.5.4
 Some changes were made in the .env file
@@ -110,7 +173,7 @@ I had to change the environment variable from AZURE_OPENAI_API_KEY to AZURE_API_
 ### Summary
 - In this version, we have simplified the configuration process, improved the security of your credentials, and updated the docker instructions. 🚀
 - Please read the following sections carefully to learn how to upgrade your app and avoid any issues. 🙏
-- **Note:** If you're having trouble, before creating a new issue, please search for similar ones on our [#issues thread on our discord](https://discord.gg/weqZFtD9C4) or our [troubleshooting discussion](https://github.com/danny-avila/LibreChat/discussions/new?category=troubleshooting) on our Discussions page. If you don't find a relevant issue, feel free to create a new one and provide as much detail as possible.
+- **Note:** If you're having trouble, before creating a new issue, please search for similar ones on our [#issues thread on our discord](https://discord.librechat.ai) or our [troubleshooting discussion](https://github.com/danny-avila/LibreChat/discussions/new?category=troubleshooting) on our Discussions page. If you don't find a relevant issue, feel free to create a new one and provide as much detail as possible.
 
 ---
 

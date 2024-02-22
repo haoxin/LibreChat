@@ -30,7 +30,6 @@ weight: -8
     - [Using Plugins with Azure](#using-plugins-with-azure)
   - [OpenRouter](#openrouter)
   - [Unofficial APIs](#unofficial-apis)
-    - [ChatGPTBrowser](#chatgptbrowser)
     - [BingAI](#bingai)
   - [Conclusion](#conclusion) -->
 
@@ -65,7 +64,7 @@ In the case where you have multiple endpoints setup, but want a specific one to 
 ```bash
 # .env file
 # No spaces between values
-ENDPOINTS=azureOpenAI,openAI,google 
+ENDPOINTS=azureOpenAI,openAI,assistants,google 
 ```
 
 Note that LibreChat will use your last selected endpoint when creating a new conversation. So if Azure OpenAI is first in the order, but you used or view an OpenAI conversation last, when you hit "New Chat," OpenAI will be selected with its default conversation settings.
@@ -92,9 +91,54 @@ To get your OpenAI API key, you need to:
 - Add a payment method to your account (this is not free, sorry 😬)
 - Copy your secret key (sk-...) and save it in ./.env as OPENAI_API_KEY
 
-Notes:
+**Notes:**
+
 - Selecting a vision model for messages with attachments is not necessary as it will be switched behind the scenes for you. If you didn't outright select a vision model, it will only be used for the vision request and you should still see the non-vision model you had selected after the request is successful
 - OpenAI Vision models allow for messages without attachments
+
+---
+
+## Assistants
+
+- The [Assistants API by OpenAI](https://platform.openai.com/docs/assistants/overview) has a dedicated endpoint.
+- The Assistants API enables the creation of AI assistants, offering functionalities like code interpreter, knowledge retrieval of files, and function execution.
+    - [Read here for an in-depth documentation](https://platform.openai.com/docs/assistants/overview) of the feature, how it works, what it's capable of.
+- As with the regular [OpenAI API](#openai), go to **[https://platform.openai.com/account/api-keys](https://platform.openai.com/account/api-keys)** to get a key.
+- You will need to set the following environment variable to your key or you can set it to `user_provided` for users to provide their own.
+
+```bash
+ASSISTANTS_API_KEY=your-key
+```
+
+- You can determine which models you would like to have available with `ASSISTANTS_MODELS`; otherwise, the models list fetched from OpenAI will be used (only Assistants API compatible models will be shown).
+
+```bash
+# without spaces
+ASSISTANTS_MODELS=gpt-3.5-turbo-0125,gpt-3.5-turbo-16k-0613,gpt-3.5-turbo-16k,gpt-3.5-turbo,gpt-4,gpt-4-0314,gpt-4-32k-0314,gpt-4-0613,gpt-3.5-turbo-0613,gpt-3.5-turbo-1106,gpt-4-0125-preview,gpt-4-turbo-preview,gpt-4-1106-preview
+```
+
+- If necessary, you can also set an alternate base URL instead of the official one with `ASSISTANTS_BASE_URL`, which is similar to the OpenAI counterpart `OPENAI_REVERSE_PROXY`
+
+```bash
+ASSISTANTS_BASE_URL=http://your-alt-baseURL:3080/
+```
+
+- There is additional, optional configuration, depending on your needs, such as disabling the assistant builder UI, that are available via the [`librechat.yaml` custom config file](./custom_config.md#assistants-endpoint-object-structure):
+    - Control the visibility and use of the builder interface for assistants. [More info](./custom_config.md#disablebuilder)
+    - Specify the polling interval in milliseconds for checking run updates or changes in assistant run states. [More info](./custom_config.md#pollintervalms)
+    - Set the timeout period in milliseconds for assistant runs. Helps manage system load by limiting total run operation time. [More info](./custom_config.md#timeoutMs)
+    - Specify which assistant Ids are supported or excluded [More info](./custom_config.md#supportedIds)
+
+**Notes:**
+
+- At the time of writing, only the following models support the [Retrieval](https://platform.openai.com/docs/assistants/tools/knowledge-retrieval) capability:
+    - gpt-3.5-turbo-0125
+    - gpt-4-0125-preview
+    - gpt-4-turbo-preview
+    - gpt-4-1106-preview
+    - gpt-3.5-turbo-1106
+- Vision capability is not yet supported.
+- If you have previously set the [`ENDPOINTS` value in your .env file](./dotenv.md#endpoints), you will need to add the value `assistants`
 
 ---
 
@@ -335,6 +379,7 @@ Alternatively, you can set the [required variables](#required-variables) to expl
 
 
 **Notes:**
+
 - If using `AZURE_OPENAI_BASEURL`, you should not specify instance and deployment names instead of placeholders as the vision request will fail.
 - As of December 18th, 2023, Vision models seem to have degraded performance with Azure OpenAI when compared to [OpenAI](#openai)
 
@@ -404,6 +449,7 @@ To use Azure with the Plugins endpoint, make sure the following environment vari
 * `AZURE_API_KEY`: Your Azure API key must be set with an environment variable.
 
 **Important:**
+
 - If using `AZURE_OPENAI_BASEURL`, you should not specify instance and deployment names instead of placeholders as the plugin request will fail.
 
 ---
@@ -411,6 +457,7 @@ To use Azure with the Plugins endpoint, make sure the following environment vari
 ## [OpenRouter](https://openrouter.ai/)
 
 **[OpenRouter](https://openrouter.ai/)** is a legitimate proxy service to a multitude of LLMs, both closed and open source, including:
+
 - OpenAI models (great if you are barred from their API for whatever reason)
 - Anthropic Claude models (same as above)
 - Meta's Llama models
@@ -423,18 +470,19 @@ OpenRouter is integrated to the LibreChat by overriding the OpenAI endpoint.
 
 **Important**: As of v0.6.6, you can use OpenRouter as its own standalone endpoint:
 
-![image](https://github.com/danny-avila/LibreChat/assets/110412045/4955bfa3-7b6b-4602-933f-daef89c9eab3)
-
 ### [Review the Custom Config Guide (click here)](./custom_config.md) to add an `OpenRouter` Endpoint
 
-**Setup (legacy):**
+![image](https://github.com/danny-avila/LibreChat/assets/110412045/4955bfa3-7b6b-4602-933f-daef89c9eab3)
+
+#### Setup (legacy):
+
 - Signup to **[OpenRouter](https://openrouter.ai/)** and create a key. You should name it and set a limit as well.
 - Set the environment variable `OPENROUTER_API_KEY` in your .env file to the key you just created.
 - Set something in the `OPENAI_API_KEY`, it can be anyting, but **do not** leave it blank or set to `user_provided`  
 - Restart your LibreChat server and use the OpenAI or Plugins endpoints.
 
-**Notes:**
-- [TODO] **In the future, you will be able to set up OpenRouter from the frontend as well.**
+#### Notes (legacy):
+
 - This will override the official OpenAI API or your reverse proxy settings for both Plugins and OpenAI.
 - On initial setup, you may need to refresh your page twice to see all their supported models populate automatically.
 - Plugins: Functions Agent works with OpenRouter when using OpenAI models.
@@ -455,7 +503,7 @@ This is not to be confused with [OpenAI's Official API](#openai)!
 
 > Note that this is disabled by default and requires additional configuration to work. 
 > Also, using this may have your data exposed to 3rd parties if using a proxy, and OpenAI may flag your account.
-> See: [ChatGPT Reverse Proxy](../../features/pandoranext.md)
+> See: [ChatGPT Reverse Proxy](../../features/ninja.md)
 
 To get your Access token for ChatGPT Browser Access, you need to:
 
@@ -479,10 +527,75 @@ I recommend using Microsoft Edge for this:
 - Look for `lsp.asx` (if it's not there look into the other entries for one with a **very long** cookie) 
 - Copy the whole cookie value. (Yes it's very long 😉)
 - Use this **"full cookie string"** for your "BingAI Token"
-
-<p align="left">
+  - <p align="left">
     <img src="https://github.com/danny-avila/LibreChat/assets/32828263/d4dfd370-eddc-4694-ab16-076f913ff430" width="50%">
 </p>
+
+### copilot-gpt4-service
+For this setup, an additional docker container will need to be setup.
+
+***It is necessary to obtain your token first.***
+
+Follow these instructions provided at **[copilot-gpt4-service#obtaining-token](https://github.com/aaamoon/copilot-gpt4-service#obtaining-copilot-token)** and keep your token for use within the service. Additionally, more detailed instructions for setting copilot-gpt4-service are available at the [GitHub repo](https://github.com/aaamoon/copilot-gpt4-service). 
+
+It is *not* recommended to use the copilot token obtained directly, instead use the `SUPER_TOKEN` variable. (You can generate your own `SUPER_TOKEN` with the OpenSSL command `openssl rand -hex 16` and set the `ENABLE_SUPER_TOKEN` variable to `true`)
+
+1. Once your Docker environment is ready and your tokens are generated, proceed with this Docker run command to start the service:
+    ```
+    docker run -d \
+      --name copilot-gpt4-service \
+      -e HOST=0.0.0.0 \
+      -e COPILOT_TOKEN=ghp_xxxxxxx \
+      -e SUPER_TOKEN=your_super_token \
+      -e ENABLE_SUPER_TOKEN=true \
+      --restart always \
+      -p 8080:8080 \
+      aaamoon/copilot-gpt4-service:latest
+    ```
+
+2. For Docker Compose users, use the equivalent yaml configuration provided below:
+    ```yaml
+    version: '3.8'
+    services:
+      copilot-gpt4-service:
+        image: aaamoon/copilot-gpt4-service:latest
+        environment:
+          - HOST=0.0.0.0
+          - COPILOT_TOKEN=ghp_xxxxxxx # Default GitHub Copilot Token, if this item is set, the Token carried with the request will be ignored. Default is empty.
+          - SUPER_TOKEN=your_super_token # Super Token is a user-defined standalone token that can access COPILOT_TOKEN above. This allows you to share the service without exposing your COPILOT_TOKEN. Multiple tokens are separated by commas. Default is empty.
+          - ENABLE_SUPER_TOKEN=true # Whether to enable SUPER_TOKEN, default is false. If false, but COPILOT_TOKEN is not empty, COPILOT_TOKEN will be used without any authentication for all requests.
+        ports:
+          - 8080:8080
+        restart: unless-stopped
+        container_name: copilot-gpt4-service
+    ```
+
+3. After setting up the Docker container for `copilot-gpt4-service`, you can add it to your `librechat.yaml` configuration. Here is an example configuration:
+    ```yaml
+    version: 1.0.1
+    cache: true
+    endpoints:
+      custom:
+        - name: "OpenAI via Copilot"
+          apiKey: "your_super_token"
+          baseURL: "http://[copilotgpt4service_host_ip]:8080/v1"
+          models:
+            default: ["gpt-4", "gpt-3.5-turbo"] # *See Notes
+          titleConvo: true
+          titleModel: "gpt-3.5-turbo"
+          summarize: true
+          summaryModel: "gpt-3.5-turbo"
+          forcePrompt: false
+          modelDisplayLabel: "OpenAI"
+          dropParams: ["user"]
+    ```
+    Replace `your_super_token` with the token you obtained following the instructions highlighted above and `[copilotgpt4service_host_ip]` with the IP of your Docker host. *****See Notes***
+
+    Restart Librechat after adding the needed configuration, and select `OpenAI via Copilot` to start using!
+
+    >Notes: 
+    > - *Only allowed models are `gpt-4` and `gpt-3.5-turbo`. 
+    > - **Advanced users can add this to their existing docker-compose file/existing docker network and avoid having to expose port 8080 (or any port) to the copilot-gpt4-service container. 
 
 ---
 
@@ -492,5 +605,5 @@ I recommend using Microsoft Edge for this:
 
 ---
 
->⚠️ Note: If you're having trouble, before creating a new issue, please search for similar ones on our [#issues thread on our discord](https://discord.gg/weqZFtD9C4) or our [troubleshooting discussion](https://github.com/danny-avila/LibreChat/discussions/categories/troubleshooting) on our Discussions page. If you don't find a relevant issue, feel free to create a new one and provide as much detail as possible.
+>⚠️ Note: If you're having trouble, before creating a new issue, please search for similar ones on our [#issues thread on our discord](https://discord.librechat.ai) or our [troubleshooting discussion](https://github.com/danny-avila/LibreChat/discussions/categories/troubleshooting) on our Discussions page. If you don't find a relevant issue, feel free to create a new one and provide as much detail as possible.
 

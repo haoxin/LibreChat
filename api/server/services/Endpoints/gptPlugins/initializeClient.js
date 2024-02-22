@@ -60,13 +60,13 @@ const initializeClient = async ({ req, res, endpointOption }) => {
 
   let apiKey = isUserProvided ? userKey : credentials[endpoint];
 
-  if (useAzure || (apiKey && apiKey.includes('azure') && !clientOptions.azure)) {
+  if (useAzure || (apiKey && apiKey.includes('{"azure') && !clientOptions.azure)) {
     clientOptions.azure = isUserProvided ? JSON.parse(userKey) : getAzureCredentials();
     apiKey = clientOptions.azure.azureOpenAIApiKey;
   }
 
   if (!apiKey) {
-    throw new Error('API key not provided.');
+    throw new Error(`${endpoint} API key not provided.`);
   }
 
   const client = new PluginsClient(apiKey, clientOptions);
