@@ -89,3 +89,9 @@ auth.json
 /images
 
 !client/src/components/Nav/SettingsTabs/Data/
+
+
+
+mongodb/nohup.out
+mongodb/data-node/
+mongodb/meili_data/

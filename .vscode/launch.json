@@ -1,0 +1,30 @@
+{
+  "version": "0.2.0",
+  "compounds": [
+    {
+      "name": "Debug Both",
+      "configurations": ["Debug Backend", "Debug Frontend"]
+    }
+  ],
+  "configurations": [
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Debug Frontend",
+      "url": "http://localhost:3080",
+      "webRoot": "${workspaceFolder}/client/src/",
+      "sourceMaps": true,
+      "skipFiles": ["node_modules/**"]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug Backend",
+      "program": "${workspaceFolder}/api/server/index.js",
+      "env": {
+        "NODE_ENV": "development"
+      },
+      "console": "integratedTerminal"
+    }
+  ]
+}
