@@ -1,4 +1,4 @@
-const Transaction = require('./Transaction');
+const { Transaction } = require('./Transaction');
 const { logger } = require('~/config');
 
 /**
@@ -21,10 +21,15 @@ const { logger } = require('~/config');
  */
 const spendTokens = async (txData, tokenUsage) => {
   const { promptTokens, completionTokens } = tokenUsage;
-  logger.debug(`[spendTokens] conversationId: ${txData.conversationId} | Token usage: `, {
-    promptTokens,
-    completionTokens,
-  });
+  logger.debug(
+    `[spendTokens] conversationId: ${txData.conversationId}${
+      txData?.context ? ` | Context: ${txData?.context}` : ''
+    } | Token usage: `,
+    {
+      promptTokens,
+      completionTokens,
+    },
+  );
   let prompt, completion;
   try {
     if (promptTokens >= 0) {
@@ -51,7 +56,9 @@ const spendTokens = async (txData, tokenUsage) => {
       logger.debug('[spendTokens] Transaction data record against balance:', {
         user: prompt.user,
         prompt: prompt.prompt,
+        promptRate: prompt.rate,
         completion: completion.completion,
+        completionRate: completion.rate,
         balance: completion.balance,
       });
   } catch (err) {
