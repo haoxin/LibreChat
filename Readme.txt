@@ -1,3 +1,14 @@
+仅增加两个功能了: 
+1. cvenhancement
+2. speech
+
+更改: 
+1. .env文件-->librechat.yaml
+2. 还需要保留 .env, Dalle3 and assistant BASEURL还是有问题. 
+3. 更新Speech 和 Computer Vision的Key 先. 
+4. 复制.env 和 Librechat.yaml
+
+
 1. modified GPTClient & OpenAIClient to proxy OpenAI API to Azure Openai
 2. edit .env file 
 3. mongodb -- docker compose up -d to start mongodb in container.
