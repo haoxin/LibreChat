@@ -23,7 +23,6 @@ const ChatForm = ({ index = 0 }) => {
   const submitButtonRef = useRef<HTMLButtonElement>(null);
   const textAreaRef = useRef<HTMLTextAreaElement | null>(null);
   const [showStopButton, setShowStopButton] = useRecoilState(store.showStopButtonByIndex(index));
-  const [text, setText] = useRecoilState(store.textByIndex(index));
   const { requiresKey } = useRequiresKey();
 
   const methods = useForm<{ text: string }>({
@@ -64,7 +63,7 @@ const ChatForm = ({ index = 0 }) => {
     [ask, methods],
   );
   const handleVoiceInput = (input: string) => {
-    setText(input);
+    methods.setValue('text', input);
   };
   const { endpoint: _endpoint, endpointType } = conversation ?? { endpoint: null };
   const endpoint = endpointType ?? _endpoint;
@@ -111,6 +110,7 @@ const ChatForm = ({ index = 0 }) => {
                     methods.setValue('text', e.target.value);
                   },
                 })}
+                value={methods.watch('text')} //voiceinput之后重新渲染??
                 autoFocus
                 ref={(e) => {
                   textAreaRef.current = e;
