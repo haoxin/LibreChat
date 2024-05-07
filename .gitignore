@@ -76,6 +76,7 @@ config.local.ts
 **/storageState.json
 junit.xml
 **/.venv/
+**/venv/
 
 # docker override file
 docker-compose.override.yaml
@@ -99,3 +100,6 @@ mongodb/data-node/
 mongodb/meili_data/
 # User uploads
 uploads/
+
+# owner
+release/
