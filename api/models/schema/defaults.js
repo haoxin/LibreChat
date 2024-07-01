@@ -92,6 +92,10 @@ const conversationPreset = {
     type: String,
   },
   stop: { type: [{ type: String }], default: undefined },
+  isArchived: {
+    type: Boolean,
+    default: false,
+  },
   /* UI Components */
   iconURL: {
     type: String,
@@ -103,6 +107,12 @@ const conversationPreset = {
     type: String,
   },
   tools: { type: [{ type: String }], default: undefined },
+  maxContextTokens: {
+    type: Number,
+  },
+  max_tokens: {
+    type: Number,
+  },
 };
 
 const agentOptions = {
